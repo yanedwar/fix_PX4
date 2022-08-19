@@ -3,7 +3,9 @@
         {
             "name": "PX4",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "/usr/include/**",
+                "/opt/ros/melodic/include/**"
             ],
             "defines": [],
             "macFrameworkPath": [],
