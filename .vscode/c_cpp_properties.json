@@ -6,7 +6,9 @@
                 "${workspaceFolder}/**",
                 "/usr/include/**",
                 "/opt/ros/melodic/include/**",
-                "${workspaceFolder}/Tools/sitl_gazebo/ancl_sls/RosControl/devel/include"
+                "/opt/ros/noetic/include/**",
+                "${workspaceFolder}/Tools/sitl_gazebo/ancl_sls/RosControl/devel/include",
+                "${workspaceFolder}/Tools/sitl_gazebo/include"
             ],
             "defines": [],
             "macFrameworkPath": [],
