@@ -10,7 +10,7 @@
 #include <offboardholy/AttOut.h>
 #include <mavros_msgs/Thrust.h>
 #include <mavros_msgs/AttitudeTarget.h>
-// #include <gazebo_msgs/LinkStates.h>
+#include <gazebo_msgs/LinkStates.h>
 #include <tf2_ros/static_transform_broadcaster.h>
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2/LinearMath/Matrix3x3.h>
@@ -31,12 +31,18 @@ void IntrgralStabController(const double x[10], const double Kv[15],
                            const double param[4], const double setpoint[3],
                            double u[3], double err_int[3], double Ki[3], double t_last);
 
+
 geometry_msgs::Pose quadpose;
 geometry_msgs::Pose loadpose;
 geometry_msgs::Pose pendpose;
 geometry_msgs::Twist pendtwist;
 geometry_msgs::Twist quadtwist;
 geometry_msgs::Twist loadtwist;
+
+void gazebo_state_cb(const gazebo_msgs::LinkStates::ConstPtr& msg){
+    quadpose = msg->pose[2];
+    loadpose = msg->pose[10];
+}
 
 mavros_msgs::State current_state;
 void state_cb(const mavros_msgs::State::ConstPtr& msg){
@@ -114,6 +120,7 @@ int main(int argc, char **argv)
     ros::Subscriber local_vel_sub = nh.subscribe<geometry_msgs::TwistStamped>("mavros/local_position/velocity_local",10,vel_cb);
     ros::Subscriber attitude_target_sub = nh.subscribe<mavros_msgs::AttitudeTarget>("/offboardholy/target_attitude", 10, attitude_target_cb);
     ros::Subscriber sls_state_sub = nh.subscribe<offboardholy::PTStates>("/offboardholy/sls_state", 10, sls_state_cb);
+    ros::Subscriber gazebo_state_sub = nh.subscribe<gazebo_msgs::LinkStates>("gazebo/link_states", 10, gazebo_state_cb);
 
     ros::Publisher attitude_setpoint_pub = nh.advertise<mavros_msgs::AttitudeTarget>("mavros/setpoint_raw/attitude", 10);
     ros::Publisher local_pos_pub = nh.advertise<geometry_msgs::PoseStamped>("mavros/setpoint_position/local", 10);
@@ -204,6 +211,11 @@ int main(int argc, char **argv)
           dv[i] = PTState.PT_states[i];
           // ROS_INFO_STREAM( "dv[i]: "<< i << " : " << dv[i] << "\n");
         }
+        double Lx = (loadpose.position.x) - (quadpose.position.x) ;
+        double Ly = (-loadpose.position.y) - (-quadpose.position.y) ;
+        double Lz = (-loadpose.position.z) - (-quadpose.position.z) ;
+        Param[2] = sqrt((Lx*Lx) + (Ly*Ly) + (Lz*Lz));
+        ROS_INFO_STREAM("Length: " << Param[2]);
         switch (stage)
         {  
         case 0: // takeoff
@@ -493,7 +505,7 @@ void att_out_pub(ros::Publisher &att_con_pub, const double controller_output[3])
     for (int i = 0; i < 3; i++){
         att_out.con_out[i] = controller_output[i];
     }
-
+ 
     att_con_pub.publish(att_out);
 }
 

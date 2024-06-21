@@ -257,6 +257,7 @@ void gazebo_state_cb(const gazebo_msgs::LinkStates::ConstPtr& msg){
 PendulumAngles ToPenAngles(double Lx,double Ly,double Lz) { //x=base.x
     PendulumAngles angles;
     double L = sqrt((Lx*Lx) + (Ly*Ly) + (Lz*Lz));
+    ROS_INFO_STREAM("Length: " << L);
 
     // beta (y-axis rotation)
     double sinbeta = Lx/L;

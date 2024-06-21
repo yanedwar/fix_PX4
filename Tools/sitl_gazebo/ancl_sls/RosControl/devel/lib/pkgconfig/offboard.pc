@@ -1,0 +1,8 @@
+prefix=/home/ejyan/PX4_SITL_664/Tools/sitl_gazebo/ancl_sls/RosControl/devel
+
+Name: offboard
+Description: Description of offboard
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
