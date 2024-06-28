@@ -131,7 +131,8 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/ejyan/PX4_SITL_664/Tools/sitl_gazebo/ancl_sls/RosControl/build/gtest/cmake_install.cmake")
-  include("/home/ejyan/PX4_SITL_664/Tools/sitl_gazebo/ancl_sls/RosControl/build/offb_control/cmake_install.cmake")
+  include("/home/ejyan/PX4_SITL_664/Tools/sitl_gazebo/ancl_sls/RosControl/build/offboard/cmake_install.cmake")
+  include("/home/ejyan/PX4_SITL_664/Tools/sitl_gazebo/ancl_sls/RosControl/build/offboardholy/cmake_install.cmake")
 
 endif()
 
