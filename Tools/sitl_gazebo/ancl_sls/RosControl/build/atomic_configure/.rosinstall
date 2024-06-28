@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/ejyan/PX4_SITL_664/Tools/sitl_gazebo/ancl_sls/RosControl/devel/setup.sh
